@@ -5,9 +5,19 @@ def getApplications(client, offset):
     query = gql(
     """
     query {
-        applications(limit: 100, offset: """+str(offset)+"""){
-            nodes{
-                name
+        applications(limit: 100, offset: """+str(offset)+""") {
+            nodes {
+                name,
+			    environments (limit: 100) {
+                    nodes {
+                        name
+                    }
+			    }
+                pipelines (limit: 100) {
+                    nodes {
+                        name
+                    }
+                }
             }
         }
     }
@@ -19,7 +29,7 @@ def getApplications(client, offset):
     return result['applications']['nodes']
 
 # Create a transport to the harness graqhql endpoint
-transport = AIOHTTPTransport(url="https://app.harness.io/gateway/api/graphql?accountId=TEyxLP87RquOEph_GrbYvQ", headers={'x-api-key': 'VEV5eExQODdScXVPRXBoX0dyYll2UTo6eklhRDZNZlFRNDV2cmdGN2ttbzRITkwzVG9iTm5GcWptdXlMamt2ck5jekJNSHdLNW1vemNNbEk1RjlmWWNjSWlZYkFROEU1RDF6TEhWSTg='})
+transport = AIOHTTPTransport(url="https://app.harness.io/gateway/api/graphql?accountId=TEyxLP87RquOEph_GrbYvQ", headers={'x-api-key': 'YOUR_API_KEY='})
 
 # Create a GraphQL client using the defined transport
 client = Client(transport=transport, fetch_schema_from_transport=True)
